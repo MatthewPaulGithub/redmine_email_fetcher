@@ -31,6 +31,9 @@ else
     menu :admin_menu,
          :email_configurations,
          { controller: 'email_configurations', action: 'index' },
+         html: {
+             class: 'icon',
+         },
          caption: :title_email_configurations
   end
 

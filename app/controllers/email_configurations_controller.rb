@@ -1,6 +1,7 @@
 # Class responsible for handling EmailConfigurationsController model controller.
 class EmailConfigurationsController < ApplicationController
   unloadable
+  layout 'admin'
 
   # GET /email_configurations
   # GET /email_configurations.json
