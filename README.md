@@ -1,24 +1,22 @@
-I Have tested this under Redmine 3.4.6.stable
+# Redmine Email Fetcher
 
-Redmine Email Fetcher
-=====================
+This redmine plugin extends the Redmine [Receiving emails](http://www.redmine.org/projects/redmine/wiki/RedmineReceivingEmails#Fetching-emails-from-a-POP3-server)
+functionality by allowing the configuration of multiple email accounts to fetch e-mails periodically.
 
-This redmine plugin extends the Redmine [Receiving emails](http://www.redmine.org/projects/redmine/wiki/RedmineReceivingEmails#Fetching-emails-from-a-POP3-server) 
-functionality by allowing the configuration of email accounts from where emails should be periodically fetched.
-
-__Features__:
+## Features
 
  * Stores IMAP and POP3 email configurations.
- * Associate each email configuration with the desired project, tracker and optionally with categories and priority.   
+ * Associate each email configuration with the desired project, tracker and optionally with categories and priority.
  * Allow manual email connection test and fetch.
  * Adds a task which allows the cronjob to fetch emails from all active email configurations.
  * Allows a configuration to be inactivated to stop its emails synchronisation with Redmine.
 
-__Restrictions__:
+## Requirements
 
-* The plugin requires a Ruby version equal or higher than 1.9.0.
-* The plugin requires a Rails version equal or higher than 3.0.0.
-* The plugin requires a Redmine version equal or higher than 2.1.0.
+* Ruby >= 2.2.2
+* Rails >= 5.2.0
+* Redmine >= 4.0.0
+* Bundler >= 2.0.1
 
 __Remarks__:
 
@@ -41,7 +39,7 @@ Installation & Upgrade
    ```
    git clone git://github.com/luismaia/redmine_email_fetcher.git
    ```
-   
+
    **upgrade** - Backup and replace the old plugin directory with the new
    plugin files. If you are downloading the plugin directly from GitHub, you
    can do so by changing into the plugin directory and issuing the command
@@ -54,7 +52,7 @@ Installation & Upgrade
    ```
 
 3. Install the plugin by running the following command (in the redmine directory)
-   to upgrade the database (make a db backup before) and copy current assets to 
+   to upgrade the database (make a db backup before) and copy current assets to
    `public/plugin_assets/redmine_email_fetcher`.
    ```
    rake redmine:plugins:migrate RAILS_ENV=production
@@ -99,9 +97,9 @@ Open `Administration > Fetch emails` to access the plugin configuration:
   - **POP3**
 + **Is configuration active?** - Specify if this email account is active and should
   be synchronized:
-  - **True** - Task `fetch_all_emails` should synchronize this email account 
+  - **True** - Task `fetch_all_emails` should synchronize this email account
   - **False** - Task `fetch_all_emails` should ignore this email account
-+ **Last successful fetch at** - (read only) Date and time of the last synchronization of this 
++ **Last successful fetch at** - (read only) Date and time of the last synchronization of this
   email account with Redmine.
 
 
@@ -113,32 +111,32 @@ Open `Administration > Fetch emails` to access the plugin configuration:
 + **Username** - The IMAP or POP3 email account username (e.g. `it@domain.com`).
 + **Password** - The IMAP or POP3 email account password.
 + **Folder name** - The email folder name from where the emails should be fetched:
-  - **IMAP** - Any folder name is possible, but the test function will validate that 
+  - **IMAP** - Any folder name is possible, but the test function will validate that
     this folder is reachable after login) (e.g. `REDMINE`).
   - **POP3** - Since this is an old protocol, only the `INBOX` folder is allowed
     (in fact you can't change this option)
-+ **On success move to folder (IMAP only)** - (optional) This IMAP attribute allows configuration 
++ **On success move to folder (IMAP only)** - (optional) This IMAP attribute allows configuration
   of where successfully received emails should be moved to, instead of deleting them (e.g. `ARCHIVE`).
-+ **On failure move to folder (IMAP only)** - (optional) This IMAP attribute allows configuration 
++ **On failure move to folder (IMAP only)** - (optional) This IMAP attribute allows configuration
   of where ignored emails should be moved (e.g. `IGNORED`).
-+ **Use APOP? (POP3 only)** - This POP3 attribute allows specifying if APOP 
++ **Use APOP? (POP3 only)** - This POP3 attribute allows specifying if APOP
   authentication should be used (default: `false`).
-+ **On failure delete email (POP3 only)** - This POP3 attribute allows specifying whether emails which 
-  could not be processed successfully are deleted from the server  
++ **On failure delete email (POP3 only)** - This POP3 attribute allows specifying whether emails which
+  could not be processed successfully are deleted from the server
   (default: `false` - default behaviour is to leave them on the server).
 
 
 **Unknown Sender Actions (in Redmine):**
 
-+ **Method for unknown users** - How to handle emails from an unknown user where 
++ **Method for unknown users** - How to handle emails from an unknown user where
   ACTION can be one of the following values:
   - **accept** - the sender is considered as an anonymous user and the email is accepted (default).
                  If you choose this option you must activate the Custom field `owner-email`, where
                  the sender email address will be stored. Without this field activated, the email fetch will fail,
-                 since this information is required to send information back to the sender 
+                 since this information is required to send information back to the sender
                  (the [Redmine Helpdesk plugin](https://github.com/jfqd/redmine_helpdesk) may be a nice addition).
   - **ignore** - The email is ignored.
-  - **create** - A user account is created for the sender (username/password are sent back to the user) 
+  - **create** - A user account is created for the sender (username/password are sent back to the user)
     and the email is accepted.
 + **Use no_account_notice** - Suppressing account generation notification (default `False`).
 + **Use no_permission_check** - Disable permission checking when receiving the email (default `True`).
@@ -165,7 +163,7 @@ The following tasks are available:
 
     # rake -T redmine:plugins:email_fetcher
     rake redmine:plugins:email_fetcher:fetch_all_emails   # Fetch all active email accounts emails to Redmine
-    
+
 This task can be used for periodic synchronization.
 For example:
 
@@ -216,6 +214,6 @@ After make your changes and before send the PR to the project, please validate t
 
 License
 -------
-This plugin is released under the GPL v3 license.
+This plugin is released under the GPLv3 license.
 
 See LICENSE for more information.
