@@ -28,7 +28,7 @@ class EmailConfigurationsController < ApplicationController
   # GET /email_configurations/new
   # GET /email_configurations/new.json
   def new
-    @email_configuration = EmailConfiguration.new
+    @email_configuration = EmailConfiguration.new(configuration_params)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -44,7 +44,7 @@ class EmailConfigurationsController < ApplicationController
   # POST /email_configurations
   # POST /email_configurations.json
   def create
-    @email_configuration = EmailConfiguration.new(params[:email_configuration])
+    @email_configuration = EmailConfiguration.new(configuration_params)
 
     respond_to do |format|
       if @email_configuration.save
@@ -63,7 +63,7 @@ class EmailConfigurationsController < ApplicationController
     @email_configuration = EmailConfiguration.find(params[:id])
 
     respond_to do |format|
-      if @email_configuration.update_attributes(params[:email_configuration])
+      if @email_configuration.update_attributes(configuration_params)
         format.html { redirect_to email_configurations_url, notice: l(:mgs_email_configuration_update_success) }
         format.json { head :no_content }
       else
@@ -125,5 +125,34 @@ class EmailConfigurationsController < ApplicationController
         format.json { head :no_content }
       end
     end
+  end
+
+  private
+
+  def configuration_params
+      params.require(:email_configuration).permit(
+          :allow_override,
+          :apop,
+          :category,
+          :configuration_type,
+          :default_group,
+          :delete_unprocessed,
+          :flg_active,
+          :folder,
+          :host,
+          :last_fetch_at,
+          :move_on_failure,
+          :move_on_success,
+          :no_account_notice,
+          :no_permission_check,
+          :password,
+          :port,
+          :priority,
+          :project_id,
+          :ssl,
+          :tracker_id,
+          :unknown_user,
+          :username
+      )
   end
 end
