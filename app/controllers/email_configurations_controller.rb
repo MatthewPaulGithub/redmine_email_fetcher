@@ -130,29 +130,29 @@ class EmailConfigurationsController < ApplicationController
   private
 
   def configuration_params
-      params.require(:email_configuration).permit(
-          :allow_override,
-          :apop,
-          :category,
-          :configuration_type,
-          :default_group,
-          :delete_unprocessed,
-          :flg_active,
-          :folder,
-          :host,
-          :last_fetch_at,
-          :move_on_failure,
-          :move_on_success,
-          :no_account_notice,
-          :no_permission_check,
-          :password,
-          :port,
-          :priority,
-          :project_id,
-          :ssl,
-          :tracker_id,
-          :unknown_user,
-          :username
-      )
+    params.fetch(:email_configuration, {}).permit(
+      :allow_override,
+      :apop,
+      :category,
+      :configuration_type,
+      :default_group,
+      :delete_unprocessed,
+      :flg_active,
+      :folder,
+      :host,
+      :last_fetch_at,
+      :move_on_failure,
+      :move_on_success,
+      :no_account_notice,
+      :no_permission_check,
+      :password,
+      :port,
+      :priority,
+      :project_id,
+      :ssl,
+      :tracker_id,
+      :unknown_user,
+      :username
+    )
   end
 end
