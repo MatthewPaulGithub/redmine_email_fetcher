@@ -1,5 +1,5 @@
 # Create EMAIL_CONFIGURATIONS model
-class CreateEmailConfigurations < ActiveRecord::Migration
+class CreateEmailConfigurations < ActiveRecord::Migration[5.0]
   def change
     create_table :email_configurations do |t|
       t.string :configuration_type, null: false
