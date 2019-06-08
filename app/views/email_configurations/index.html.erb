@@ -45,6 +45,15 @@
             <%= link_to l(:button_edit), edit_email_configuration_path(config), class: 'icon icon-edit' %>
             <%= link_to l(:button_test), test_email_configuration_path(config), class: 'icon icon-test' %>
             <%= link_to l(:button_fetch), fetch_email_configuration_path(config), class: 'icon icon-test' %>
+            <%= link_to l(:button_delete), {
+                  controller: 'email_configurations',
+                  action: 'destroy',
+                  id: config.id
+                },
+                data: { confirm: l(:text_are_you_sure) },
+                method: :delete,
+                class: 'icon icon-del'
+            %>
           </td>
         </tr>
     <% end %>
