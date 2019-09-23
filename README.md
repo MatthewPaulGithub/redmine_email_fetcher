@@ -87,7 +87,7 @@ before proceeding.
 1. Navigate to `#{RAILS_ROOT}` and run the following command to remove
    the database table and configuration data.
    ```shell
-   $ rake redmine:plugins:migrate NAME=email_fetcher VERSION=0 RAILS_ENV=production
+   $ rake redmine:plugins:migrate NAME=redmine_email_fetcher VERSION=0 RAILS_ENV=production
    ```
 
 2. Remove the plugin from the `plugins` folder.
