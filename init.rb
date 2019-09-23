@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'redmine'
 require 'email_configurations_hooks'
 
@@ -30,7 +32,7 @@ else
          :email_configurations,
          { controller: 'email_configurations', action: 'index' },
          html: {
-          class: 'icon',
+           class: 'icon'
          },
          caption: :title_email_configurations
   end

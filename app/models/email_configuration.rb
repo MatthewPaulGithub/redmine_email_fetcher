@@ -1,5 +1,7 @@
+# frozen_string_literal: trueApplicationRecord
+
 # EmailConfiguration Test class
-class EmailConfiguration < ActiveRecord::Base
+class EmailConfiguration < ApplicationRecord
   include Redmine::SafeAttributes
   include EmailTests
   include EmailFetches
@@ -28,7 +30,7 @@ class EmailConfiguration < ActiveRecord::Base
   validates :no_permission_check, inclusion: { in: [true, false] }
 
   validates :folder, presence: true,
-                     uniqueness: { scope: [:host, :port, :username], message: l(:msg_unique_key_folder) }
+                     uniqueness: { scope: %i[host port username], message: l(:msg_unique_key_folder) }
 
   # SCOPES
   scope :active, lambda {

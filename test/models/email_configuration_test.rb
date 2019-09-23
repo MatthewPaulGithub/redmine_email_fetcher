@@ -1,4 +1,6 @@
-require File.expand_path('../../test_helper', __FILE__)
+# frozen_string_literal: true
+
+require File.expand_path('../test_helper', __dir__)
 
 # EmailConfiguration Test class
 class EmailConfigurationTest < ActiveSupport::TestCase
@@ -117,7 +119,7 @@ class EmailConfigurationTest < ActiveSupport::TestCase
     assert_equal 3, EmailConfiguration.all.count
     assert_equal 3, EmailConfiguration.active.count
 
-    email_config.update_attributes(flg_active: false)
+    email_config.update(flg_active: false)
     assert_equal 3, EmailConfiguration.all.count
     assert_equal 2, EmailConfiguration.active.count
   end
@@ -138,7 +140,7 @@ class EmailConfigurationTest < ActiveSupport::TestCase
     #
     # Fetch 1 email configuration
     EmailConfiguration.active.each do |email_config|
-      email_config.update_attributes(flg_active: false)
+      email_config.update(flg_active: false)
     end
 
     new_email_config = email_configuration('luis.maia.04@example.com')
@@ -151,7 +153,7 @@ class EmailConfigurationTest < ActiveSupport::TestCase
 
     #
     # Not using IMAP or POP3
-    new_email_config.update_attributes(configuration_type: 'OTHER_STUFF')
+    new_email_config.update(configuration_type: 'OTHER_STUFF')
 
     assert_equal 3, EmailConfiguration.all.count
     assert_equal 1, EmailConfiguration.active.count
@@ -166,7 +168,7 @@ class EmailConfigurationTest < ActiveSupport::TestCase
     #
     # Fetch 1 email configuration (USING IMAP)
     EmailConfiguration.active.each do |email_config|
-      email_config.update_attributes(flg_active: false)
+      email_config.update(flg_active: false)
     end
 
     real_email_config_imap = EmailConfiguration.new(
@@ -188,10 +190,10 @@ class EmailConfigurationTest < ActiveSupport::TestCase
 
     assert_equal ["SUCCESS : #{real_email_config_imap.log_msg}"], EmailConfiguration.fetch_all_emails
 
-    real_email_config_imap.update_attributes(folder: '!!NON-EXISTENT-FOLDER!!')
+    real_email_config_imap.update(folder: '!!NON-EXISTENT-FOLDER!!')
     assert_equal ["ERROR : #{real_email_config_imap.log_msg}"], EmailConfiguration.fetch_all_emails
 
-    real_email_config_imap.update_attributes(folder: 'INBOX', password: 'wrong_password')
+    real_email_config_imap.update(folder: 'INBOX', password: 'wrong_password')
     assert_equal ["ERROR : #{real_email_config_imap.log_msg}"], EmailConfiguration.fetch_all_emails
   end
 
@@ -201,7 +203,7 @@ class EmailConfigurationTest < ActiveSupport::TestCase
   def test_fetch_all_emails_pop3
     # Fetch 1 email configuration (USING POP3)
     EmailConfiguration.active.each do |email_config|
-      email_config.update_attributes(flg_active: false)
+      email_config.update(flg_active: false)
     end
 
     real_email_config_pop3 = EmailConfiguration.new(
@@ -225,10 +227,10 @@ class EmailConfigurationTest < ActiveSupport::TestCase
 
     assert_equal ["SUCCESS : #{real_email_config_pop3.log_msg}"], EmailConfiguration.fetch_all_emails
 
-    real_email_config_pop3.update_attributes(password: 'wrong_password')
+    real_email_config_pop3.update(password: 'wrong_password')
     assert_equal ["ERROR : #{real_email_config_pop3.log_msg}"], EmailConfiguration.fetch_all_emails
 
-    real_email_config_pop3.update_attributes(ssl: true)
+    real_email_config_pop3.update(ssl: true)
     assert_equal ["ERROR : #{real_email_config_pop3.log_msg}"], EmailConfiguration.fetch_all_emails
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # EmailTests module
 module EmailTests
   require 'timeout'
@@ -6,11 +8,11 @@ module EmailTests
 
   def test
     if configuration_type == 'imap'
-      return test_imap
+      test_imap
     elsif configuration_type == 'pop3'
-      return test_pop3
+      test_pop3
     else
-      return test_failure(l(:msg_configuration_type_error))
+      test_failure(l(:msg_configuration_type_error))
     end
   end
 
@@ -21,7 +23,6 @@ module EmailTests
       imap = Timeout.timeout(10) do
         Net::IMAP.new(host, port, ssl)
       end
-
     rescue Errno::ECONNREFUSED, # connection refused by host or an intervening firewall.
            Errno::ETIMEDOUT, # connection timed out (possibly due to packets being dropped by an intervening firewall).
            Errno::ENETUNREACH, # there is no route to that network.
@@ -34,7 +35,6 @@ module EmailTests
 
     begin
       imap.login(username, password)
-
     rescue Net::IMAP::NoResponseError => e
       return test_failure(l(:msg_login_pass_incorrect), e)
     end
@@ -44,7 +44,6 @@ module EmailTests
       imap.select(folder)
       imap.logout
       return test_success
-
     rescue Net::IMAP::NoResponseError => e
       imap.logout
       imap.disconnect
@@ -54,7 +53,7 @@ module EmailTests
 
   def test_pop3
     Timeout.timeout(10) do
-      Net::POP3.enable_ssl(OpenSSL::SSL::VERIFY_NONE) if self.ssl?
+      Net::POP3.enable_ssl(OpenSSL::SSL::VERIFY_NONE) if ssl?
 
       pop = Net::POP3.APOP(apop).new(host, port)
       pop.start(username, password)
@@ -63,17 +62,15 @@ module EmailTests
       pop.finish
       return test_success
     end
-
   rescue Errno::ECONNREFUSED, # connection refused by host or an intervening firewall.
          Errno::ETIMEDOUT, # connection timed out (possibly due to packets being dropped by an intervening firewall).
          Errno::ENETUNREACH, # there is no route to that network.
          SocketError, # hostname not known or other socket error.
          OpenSSL::SSL::SSLError,
          Timeout::Error => e
-    return test_failure(l(:msg_can_not_connect), e)
-
+    test_failure(l(:msg_can_not_connect), e)
   rescue Net::POPAuthenticationError => e
-    return test_failure(l(:msg_login_pass_incorrect), e)
+    test_failure(l(:msg_login_pass_incorrect), e)
   end
 
   def test_success(message = l(:msg_test_success))

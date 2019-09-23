@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Class responsible for handling EmailConfigurationsController model controller.
 class EmailConfigurationsController < ApplicationController
   unloadable
@@ -63,7 +65,7 @@ class EmailConfigurationsController < ApplicationController
     @email_configuration = EmailConfiguration.find(params[:id])
 
     respond_to do |format|
-      if @email_configuration.update_attributes(configuration_params)
+      if @email_configuration.update(configuration_params)
         format.html { redirect_to email_configurations_url, notice: l(:mgs_email_configuration_update_success) }
         format.json { head :no_content }
       else
@@ -131,28 +133,9 @@ class EmailConfigurationsController < ApplicationController
 
   def configuration_params
     params.fetch(:email_configuration, {}).permit(
-      :allow_override,
-      :apop,
-      :category,
-      :configuration_type,
-      :default_group,
-      :delete_unprocessed,
-      :flg_active,
-      :folder,
-      :host,
-      :last_fetch_at,
-      :move_on_failure,
-      :move_on_success,
-      :no_account_notice,
-      :no_permission_check,
-      :password,
-      :port,
-      :priority,
-      :project_id,
-      :ssl,
-      :tracker_id,
-      :unknown_user,
-      :username
+      :allow_override, :apop, :category, :configuration_type, :default_group, :delete_unprocessed, :flg_active,
+      :folder, :host, :last_fetch_at, :move_on_failure, :move_on_success, :no_account_notice, :no_permission_check,
+      :password, :port, :priority, :project_id, :ssl, :tracker_id, :unknown_user, :username
     )
   end
 end

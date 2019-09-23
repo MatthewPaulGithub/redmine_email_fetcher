@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 # EmailFetches module
 module EmailFetches
   def test_and_fetch_emails
     test_success, message = test
 
-    if test_success
-      fetch_success = fetch_emails
-    else
-      fetch_success = false
-    end
+    fetch_success = if test_success
+                      fetch_emails
+                    else
+                      false
+                    end
 
     message = l(:msg_fetch_success) if fetch_success
 
@@ -21,11 +23,11 @@ module EmailFetches
     # Execute Redmine functions and return
     if configuration_type == 'imap'
       Redmine::IMAP.check(email_options, MailHandler.extract_options_from_env(redmine_options.with_indifferent_access))
-      self.update_attributes!(last_fetch_at: Time.now)
+      update!(last_fetch_at: Time.zone.now)
       return true
     elsif configuration_type == 'pop3'
       Redmine::POP3.check(email_options, MailHandler.extract_options_from_env(redmine_options.with_indifferent_access))
-      self.update_attributes!(last_fetch_at: Time.now)
+      update!(last_fetch_at: Time.zone.now)
       return true
     else
       return false
@@ -62,9 +64,9 @@ module EmailFetches
                       apop: apop,
                       delete_unprocessed: delete_unprocessed }
 
-    email_options[:folder] = folder unless folder.blank?
-    email_options[:move_on_success] = move_on_success unless move_on_success.blank?
-    email_options[:move_on_failure] = move_on_failure unless move_on_failure.blank?
+    email_options[:folder] = folder if folder.present?
+    email_options[:move_on_success] = move_on_success if move_on_success.present?
+    email_options[:move_on_failure] = move_on_failure if move_on_failure.present?
 
     email_options
   end
@@ -100,15 +102,15 @@ module EmailFetches
                         no_account_notice: (no_account_notice ? '1' : '0'),
                         default_group: nil }
 
-    redmine_options[:allow_override] = allow_override unless allow_override.blank?
-    redmine_options[:default_group] = default_group unless default_group.blank?
+    redmine_options[:allow_override] = allow_override if allow_override.present?
+    redmine_options[:default_group] = default_group if default_group.present?
 
     redmine_options
   end
 
   def default_status_name
     default_status = IssueStatus.default if Redmine::VERSION.to_s < '3.0.0'
-    default_status = IssueStatus.find_by_id(1) if Redmine::VERSION.to_s >= '3.0.0'
+    default_status = IssueStatus.find_by(id: 1) if Redmine::VERSION.to_s >= '3.0.0'
 
     default_status_name = default_status.nil? ? nil : default_status.name
     default_status_name

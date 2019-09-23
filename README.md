@@ -1,6 +1,6 @@
 # Redmine Email Fetcher
 
-This redmine plugin extends the Redmine [Receiving emails](http://www.redmine.org/projects/redmine/wiki/RedmineReceivingEmails#Fetching-emails-from-a-POP3-server)
+This Redmine plugin extends the Redmine [Receiving emails](http://www.redmine.org/projects/redmine/wiki/RedmineReceivingEmails#Fetching-emails-from-a-POP3-server)
 functionality by allowing the configuration of multiple email accounts to fetch e-mails periodically.
 
 ## Features
@@ -8,7 +8,7 @@ functionality by allowing the configuration of multiple email accounts to fetch 
  * Stores IMAP and POP3 email configurations.
  * Associate each email configuration with the desired project, tracker and optionally with categories and priority.
  * Allow manual email connection test and fetch.
- * Adds a task which allows the cronjob to fetch emails from all active email configurations.
+ * Adds a task which allows the cron job to fetch emails from all active email configurations.
  * Allows a configuration to be inactivated to stop its emails synchronisation with Redmine.
 
 ## Requirements
@@ -21,7 +21,7 @@ functionality by allowing the configuration of multiple email accounts to fetch 
 __Remarks__:
 
 * The plugin is prepared and intended to run with any IMAP and POP3 email account, however
-  some issues can accur due to security certificates.
+  some issues can occur due to security certificates.
 * When using SSL, please check that the machine has the proper certificates installed
   by running the following terminal commands:
   * `openssl`
@@ -30,8 +30,7 @@ __Remarks__:
   to update them accordingly in this plugin administration
 
 
-Installation & Upgrade
-----------------------
+## Installation & Upgrade
 
 1. **install.** - Copy your plugin directory into `#{RAILS_ROOT}/plugins`.
    If you are downloading the plugin directly from GitHub, you can do so by
@@ -189,28 +188,18 @@ All PR are very welcome.
 
 After make your changes and before send the PR to the project, please validate that:
 
-+ Rubocop doesn't detect offenses:
+* Rubocop doesn't detect offenses and
+* Tests are passing (tests need Redmine):
 
-   ```
-   cd plugins/redmine_email_fetcher
-   rubocop --auto-correct
-   ```
-
-+ Tests are passing (tests need Redmine):
-
-   ```
-   RAILS_ENV=test rake db:drop db:create db:migrate
-   RAILS_ENV=test rake redmine:plugins:migrate
-   RAILS_ENV=test rake redmine:load_default_data
-   ```
-
-   ```
-   RAILS_ENV=test rake test TEST=plugins/redmine_email_fetcher/test/<path_to_test>
-   e.g.:
-   RAILS_ENV=test rake test TEST=plugins/redmine_email_fetcher/test/models/email_configuration_test.rb
-   RAILS_ENV=test bundle exec ruby -I test plugins/redmine_email_fetcher/test/models/email_configuration_test.rb
-   ```
-
+```shell
+cd plugins/redmine_email_fetcher
+bundle exec rubocop --auto-correct
+RAILS_ENV=test rake db:drop db:create db:migrate
+RAILS_ENV=test rake redmine:plugins:migrate
+RAILS_ENV=test rake redmine:load_default_data
+RAILS_ENV=test rake test TEST=plugins/redmine_email_fetcher/test/models/email_configuration_test.rb
+RAILS_ENV=test bundle exec ruby -I test plugins/redmine_email_fetcher/test/models/email_configuration_test.rb
+```
 
 License
 -------
