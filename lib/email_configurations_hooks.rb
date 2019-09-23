@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # EmailConfigurationsHooks class
 class EmailConfigurationsHooks < Redmine::Hook::ViewListener
   # Add CSS class

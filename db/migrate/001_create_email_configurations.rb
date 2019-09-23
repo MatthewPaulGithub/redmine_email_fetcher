@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # Create EMAIL_CONFIGURATIONS model
-class CreateEmailConfigurations < ActiveRecord::Migration
+class CreateEmailConfigurations < ActiveRecord::Migration[5.0]
   def change
     create_table :email_configurations do |t|
       t.string :configuration_type, null: false
@@ -29,9 +31,10 @@ class CreateEmailConfigurations < ActiveRecord::Migration
 
       t.datetime :last_fetch_at, null: true
       t.boolean :flg_active, default: true
+      t.timestamps
     end
 
-    add_index(:email_configurations, [:host, :port, :username, :folder],
+    add_index(:email_configurations, %i[host port username folder],
               unique: true, name: 'index_unique_email_configuration')
   end
 end

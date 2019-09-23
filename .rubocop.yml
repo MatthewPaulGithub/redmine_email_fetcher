@@ -1,8 +1,10 @@
+require: 'rubocop-rails'
+
 AllCops:
-  Include:
-    - '**/Rakefile'
-    - '**/config.ru'
-  RunRailsCops: true
+  TargetRubyVersion: 2.5
+  TargetRailsVersion: 5.2
+  Exclude:
+    - 'vendor/**/*'
 
 #
 # Line is too long.

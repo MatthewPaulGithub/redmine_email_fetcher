@@ -1,5 +1,7 @@
+# frozen_string_literal: trueApplicationRecord
+
 # EmailConfiguration Test class
-class EmailConfiguration < ActiveRecord::Base
+class EmailConfiguration < ApplicationRecord
   include Redmine::SafeAttributes
   include EmailTests
   include EmailFetches
@@ -28,23 +30,14 @@ class EmailConfiguration < ActiveRecord::Base
   validates :no_permission_check, inclusion: { in: [true, false] }
 
   validates :folder, presence: true,
-                     uniqueness: { scope: [:host, :port, :username], message: l(:msg_unique_key_folder) }
-
-  attr_accessible :configuration_type,
-                  :host, :port, :ssl,
-                  :username, :password, :folder,
-                  :move_on_failure, :move_on_success, :delete_unprocessed, :apop,
-                  :unknown_user, :no_account_notice, :no_permission_check, :default_group,
-                  :project_id, :tracker_id, :category, :priority,
-                  :allow_override,
-                  :last_fetch_at, :flg_active
+                     uniqueness: { scope: %i[host port username], message: l(:msg_unique_key_folder) }
 
   # SCOPES
   scope :active, lambda {
     where(flg_active: true)
   }
 
-  # Static  function to fetch all the emails from active email configurations
+  # Static function to fetch all the emails from active email configurations
   def self.fetch_all_emails
     configurations = EmailConfiguration.active
     result_out = []

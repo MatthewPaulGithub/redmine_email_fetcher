@@ -1,4 +1,6 @@
-require File.expand_path('../../test_helper', __FILE__)
+# frozen_string_literal: true
+
+require File.expand_path('../test_helper', __dir__)
 
 # EmailConfiguration Test class
 class EmailConfigurationTest < ActiveSupport::TestCase
@@ -117,7 +119,7 @@ class EmailConfigurationTest < ActiveSupport::TestCase
     assert_equal 3, EmailConfiguration.all.count
     assert_equal 3, EmailConfiguration.active.count
 
-    email_config.update_attributes(flg_active: false)
+    email_config.update(flg_active: false)
     assert_equal 3, EmailConfiguration.all.count
     assert_equal 2, EmailConfiguration.active.count
   end
@@ -138,7 +140,7 @@ class EmailConfigurationTest < ActiveSupport::TestCase
     #
     # Fetch 1 email configuration
     EmailConfiguration.active.each do |email_config|
-      email_config.update_attributes(flg_active: false)
+      email_config.update(flg_active: false)
     end
 
     new_email_config = email_configuration('luis.maia.04@example.com')
@@ -151,7 +153,7 @@ class EmailConfigurationTest < ActiveSupport::TestCase
 
     #
     # Not using IMAP or POP3
-    new_email_config.update_attributes(configuration_type: 'OTHER_STUFF')
+    new_email_config.update(configuration_type: 'OTHER_STUFF')
 
     assert_equal 3, EmailConfiguration.all.count
     assert_equal 1, EmailConfiguration.active.count
@@ -166,18 +168,21 @@ class EmailConfigurationTest < ActiveSupport::TestCase
     #
     # Fetch 1 email configuration (USING IMAP)
     EmailConfiguration.active.each do |email_config|
-      email_config.update_attributes(flg_active: false)
+      email_config.update(flg_active: false)
     end
 
-    real_email_config_imap = EmailConfiguration.new(configuration_type: 'imap',
-                                                    host: '',
-                                                    port: '993',
-                                                    ssl: true,
-                                                    username: '',
-                                                    password: '',
-                                                    folder: 'INBOX',
-                                                    project_id: @project.id,
-                                                    tracker_id: @tracker.id)
+    real_email_config_imap = EmailConfiguration.new(
+      configuration_type: 'imap',
+      host: '',
+      port: '993',
+      ssl: true,
+      username: '',
+      password: '',
+      folder: 'INBOX',
+      project_id: @project.id,
+      tracker_id: @tracker.id
+    )
+
     assert_equal true, real_email_config_imap.save
 
     assert_equal 3, EmailConfiguration.all.count
@@ -185,10 +190,10 @@ class EmailConfigurationTest < ActiveSupport::TestCase
 
     assert_equal ["SUCCESS : #{real_email_config_imap.log_msg}"], EmailConfiguration.fetch_all_emails
 
-    real_email_config_imap.update_attributes(folder: '!!NON-EXISTENT-FOLDER!!')
+    real_email_config_imap.update(folder: '!!NON-EXISTENT-FOLDER!!')
     assert_equal ["ERROR : #{real_email_config_imap.log_msg}"], EmailConfiguration.fetch_all_emails
 
-    real_email_config_imap.update_attributes(folder: 'INBOX', password: 'wrong_password')
+    real_email_config_imap.update(folder: 'INBOX', password: 'wrong_password')
     assert_equal ["ERROR : #{real_email_config_imap.log_msg}"], EmailConfiguration.fetch_all_emails
   end
 
@@ -196,23 +201,25 @@ class EmailConfigurationTest < ActiveSupport::TestCase
   # !!! To test this method successfully, it's necessary to configure it properly !!!
   #
   def test_fetch_all_emails_pop3
-    #
     # Fetch 1 email configuration (USING POP3)
     EmailConfiguration.active.each do |email_config|
-      email_config.update_attributes(flg_active: false)
+      email_config.update(flg_active: false)
     end
 
-    real_email_config_pop3 = EmailConfiguration.new(configuration_type: 'pop3',
-                                                    host: '',
-                                                    port: '110',
-                                                    ssl: false,
-                                                    username: '',
-                                                    password: '',
-                                                    folder: 'INBOX',
-                                                    apop: false,
-                                                    delete_unprocessed: false,
-                                                    project_id: @project.id,
-                                                    tracker_id: @tracker.id)
+    real_email_config_pop3 = EmailConfiguration.new(
+      configuration_type: 'pop3',
+      host: '',
+      port: '110',
+      ssl: false,
+      username: '',
+      password: '',
+      folder: 'INBOX',
+      apop: false,
+      delete_unprocessed: false,
+      project_id: @project.id,
+      tracker_id: @tracker.id
+    )
+
     assert_equal true, real_email_config_pop3.save
 
     assert_equal 3, EmailConfiguration.all.count
@@ -220,10 +227,10 @@ class EmailConfigurationTest < ActiveSupport::TestCase
 
     assert_equal ["SUCCESS : #{real_email_config_pop3.log_msg}"], EmailConfiguration.fetch_all_emails
 
-    real_email_config_pop3.update_attributes(password: 'wrong_password')
+    real_email_config_pop3.update(password: 'wrong_password')
     assert_equal ["ERROR : #{real_email_config_pop3.log_msg}"], EmailConfiguration.fetch_all_emails
 
-    real_email_config_pop3.update_attributes(ssl: true)
+    real_email_config_pop3.update(ssl: true)
     assert_equal ["ERROR : #{real_email_config_pop3.log_msg}"], EmailConfiguration.fetch_all_emails
   end
 
@@ -232,28 +239,30 @@ class EmailConfigurationTest < ActiveSupport::TestCase
   def email_configuration(email = nil)
     email = 'test_create_email_configuration@example.com' if email.nil?
 
-    email_config = EmailConfiguration.new(folder: "INBOX_#{Time.now.to_f}",
-                                          last_fetch_at: '',
-                                          host: 'mail.example.com',
-                                          no_permission_check: true,
-                                          no_account_notice: false,
-                                          unknown_user: 'accept',
-                                          apop: false,
-                                          category: '',
-                                          move_on_success: '',
-                                          ssl: false,
-                                          delete_unprocessed: false,
-                                          priority: nil,
-                                          move_on_failure: '',
-                                          project_id: @project.id,
-                                          port: '993',
-                                          tracker_id: @tracker.id,
-                                          default_group: '',
-                                          flg_active: true,
-                                          configuration_type: 'imap',
-                                          allow_override: '',
-                                          password: 'password',
-                                          username: email)
+    email_config = EmailConfiguration.new(
+      folder: "INBOX_#{Time.now.to_f}",
+      last_fetch_at: '',
+      host: 'mail.example.com',
+      no_permission_check: true,
+      no_account_notice: false,
+      unknown_user: 'accept',
+      apop: false,
+      category: '',
+      move_on_success: '',
+      ssl: false,
+      delete_unprocessed: false,
+      priority: nil,
+      move_on_failure: '',
+      project_id: @project.id,
+      port: '993',
+      tracker_id: @tracker.id,
+      default_group: '',
+      flg_active: true,
+      configuration_type: 'imap',
+      allow_override: '',
+      password: 'password',
+      username: email
+    )
 
     email_config
   end
