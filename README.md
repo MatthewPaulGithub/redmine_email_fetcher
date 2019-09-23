@@ -215,11 +215,7 @@ When using SSL, please check that the machine has the proper
 certificates installed by running the following terminal commands:
 
 ```shell
-$ openssl
-```
-
-```shell
-$ s_client -connect HOST:PORT
+$ openssl s_client -connect HOST:PORT
 ```
 
 ## Contributing
