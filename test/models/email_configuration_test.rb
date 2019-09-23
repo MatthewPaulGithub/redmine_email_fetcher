@@ -169,15 +169,18 @@ class EmailConfigurationTest < ActiveSupport::TestCase
       email_config.update_attributes(flg_active: false)
     end
 
-    real_email_config_imap = EmailConfiguration.new(configuration_type: 'imap',
-                                                    host: '',
-                                                    port: '993',
-                                                    ssl: true,
-                                                    username: '',
-                                                    password: '',
-                                                    folder: 'INBOX',
-                                                    project_id: @project.id,
-                                                    tracker_id: @tracker.id)
+    real_email_config_imap = EmailConfiguration.new(
+      configuration_type: 'imap',
+      host: '',
+      port: '993',
+      ssl: true,
+      username: '',
+      password: '',
+      folder: 'INBOX',
+      project_id: @project.id,
+      tracker_id: @tracker.id
+    )
+
     assert_equal true, real_email_config_imap.save
 
     assert_equal 3, EmailConfiguration.all.count
@@ -196,23 +199,25 @@ class EmailConfigurationTest < ActiveSupport::TestCase
   # !!! To test this method successfully, it's necessary to configure it properly !!!
   #
   def test_fetch_all_emails_pop3
-    #
     # Fetch 1 email configuration (USING POP3)
     EmailConfiguration.active.each do |email_config|
       email_config.update_attributes(flg_active: false)
     end
 
-    real_email_config_pop3 = EmailConfiguration.new(configuration_type: 'pop3',
-                                                    host: '',
-                                                    port: '110',
-                                                    ssl: false,
-                                                    username: '',
-                                                    password: '',
-                                                    folder: 'INBOX',
-                                                    apop: false,
-                                                    delete_unprocessed: false,
-                                                    project_id: @project.id,
-                                                    tracker_id: @tracker.id)
+    real_email_config_pop3 = EmailConfiguration.new(
+      configuration_type: 'pop3',
+      host: '',
+      port: '110',
+      ssl: false,
+      username: '',
+      password: '',
+      folder: 'INBOX',
+      apop: false,
+      delete_unprocessed: false,
+      project_id: @project.id,
+      tracker_id: @tracker.id
+    )
+
     assert_equal true, real_email_config_pop3.save
 
     assert_equal 3, EmailConfiguration.all.count
@@ -232,28 +237,30 @@ class EmailConfigurationTest < ActiveSupport::TestCase
   def email_configuration(email = nil)
     email = 'test_create_email_configuration@example.com' if email.nil?
 
-    email_config = EmailConfiguration.new(folder: "INBOX_#{Time.now.to_f}",
-                                          last_fetch_at: '',
-                                          host: 'mail.example.com',
-                                          no_permission_check: true,
-                                          no_account_notice: false,
-                                          unknown_user: 'accept',
-                                          apop: false,
-                                          category: '',
-                                          move_on_success: '',
-                                          ssl: false,
-                                          delete_unprocessed: false,
-                                          priority: nil,
-                                          move_on_failure: '',
-                                          project_id: @project.id,
-                                          port: '993',
-                                          tracker_id: @tracker.id,
-                                          default_group: '',
-                                          flg_active: true,
-                                          configuration_type: 'imap',
-                                          allow_override: '',
-                                          password: 'password',
-                                          username: email)
+    email_config = EmailConfiguration.new(
+      folder: "INBOX_#{Time.now.to_f}",
+      last_fetch_at: '',
+      host: 'mail.example.com',
+      no_permission_check: true,
+      no_account_notice: false,
+      unknown_user: 'accept',
+      apop: false,
+      category: '',
+      move_on_success: '',
+      ssl: false,
+      delete_unprocessed: false,
+      priority: nil,
+      move_on_failure: '',
+      project_id: @project.id,
+      port: '993',
+      tracker_id: @tracker.id,
+      default_group: '',
+      flg_active: true,
+      configuration_type: 'imap',
+      allow_override: '',
+      password: 'password',
+      username: email
+    )
 
     email_config
   end
