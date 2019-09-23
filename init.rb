@@ -19,7 +19,7 @@ elsif Rails::VERSION::MAJOR < 5
 
 else
   Redmine::Plugin.register :redmine_email_fetcher do
-    name 'Redmine Email Fetcher plugin'
+    name 'Redmine Email Fetcher'
     author 'Bruce Pieterse'
     description 'Allows the configuration of several IMAP and POP3 email accounts'\
     'from where emails can be retrieved.'
