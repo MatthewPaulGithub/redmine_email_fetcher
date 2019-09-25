@@ -64,15 +64,15 @@ by changing into the plugin directory and run `git pull`.
    `#{RAILS_ROOT}`. If upgrading, ensure that you made a backup of the
    Redmine database:
    ```shell
-   $ rake redmine:plugins:migrate RAILS_ENV=production
+   $ bundle exec rake redmine:plugins:migrate RAILS_ENV=production
    ```
 
 3. In `#{RAILS_ROOT}` run the following command.
    ```shell
-   $ rake -T redmine:plugins:email_fetcher RAILS_ENV=production
+   $ bundle exec rake -T redmine:plugins:email_fetcher RAILS_ENV=production
    ```
    If the installation/upgrade was successful you should now see the list of
-   [Rake Tasks](#rake-tasks).
+   [Rake Tasks](#rake-task).
 
 4. Restart Redmine.
 
@@ -87,7 +87,7 @@ before proceeding.
 1. Navigate to `#{RAILS_ROOT}` and run the following command to remove
    the database table and configuration data.
    ```shell
-   $ rake redmine:plugins:migrate NAME=redmine_email_fetcher VERSION=0 RAILS_ENV=production
+   $ bundle exec rake redmine:plugins:migrate NAME=redmine_email_fetcher VERSION=0 RAILS_ENV=production
    ```
 
 2. Remove the plugin from the `plugins` folder.
