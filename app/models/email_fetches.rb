@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'redmine/imap'
+require 'redmine/pop3'
+
 # EmailFetches module
 module EmailFetches
   def test_and_fetch_emails
