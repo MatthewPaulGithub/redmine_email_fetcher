@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-require 'redmine'
-require 'email_configurations_hooks'
+# r5 remove requires for zeitwork
+# require 'redmine'
+# require 'email_configurations_hooks'
 
 if RUBY_VERSION < '2.2.2'
   ruby_version_error = '*** error redmine_email_fetcher: This plugin was not installed, '\

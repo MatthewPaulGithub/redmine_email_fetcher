@@ -17,6 +17,10 @@ and fetching e-mails periodically.
 * Allows a configuration to be deactivated to stop email fetching with 
   Redmine.
 
+## Redmine 5 Update
+
+* Made multiple minor changes to accommodate Redmine 5 - tagged with r5 in comments
+
 ## Requirements
 
 * Ruby >= 2.2.2

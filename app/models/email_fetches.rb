@@ -25,11 +25,17 @@ module EmailFetches
 
     # Execute Redmine functions and return
     if configuration_type == 'imap'
-      Redmine::IMAP.check(email_options, MailHandler.extract_options_from_env(redmine_options.with_indifferent_access))
+      # r5 have to add the sync part for r5 so that it sends out notifications
+      Mailer.with_synched_deliveries do
+        Redmine::IMAP.check(email_options, MailHandler.extract_options_from_env(redmine_options.with_indifferent_access))
+      end
       update!(last_fetch_at: Time.zone.now)
       return true
     elsif configuration_type == 'pop3'
-      Redmine::POP3.check(email_options, MailHandler.extract_options_from_env(redmine_options.with_indifferent_access))
+      # r5 have to add the sync part for r5 so that it sends out notifications
+      Mailer.with_synched_deliveries do
+        Redmine::POP3.check(email_options, MailHandler.extract_options_from_env(redmine_options.with_indifferent_access))
+      end
       update!(last_fetch_at: Time.zone.now)
       return true
     else
